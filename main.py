@@ -24,4 +24,6 @@ data['scores'] = data['new'].apply(lambda review: SentimentIntensityAnalyzer.pol
 data['compound'] = data['scores'].apply(lambda score_dict: score_dict["compound"])
 data['Comp_score'] = data['compound'].apply(lambda score: "pos" if score>=0 else "neg")
 
-
+vader_algorithm(data)
+support_vector_classifier(data)
+naive_bayes(data)
