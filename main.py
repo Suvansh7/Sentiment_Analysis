@@ -17,7 +17,6 @@ ic(type(data))
 ic(data.shape)
 ic(data.describe())
 
-x_train, x_test, y_train, y_test = train_test_split(data['Tweet'], data['Date'], test_size=0.2, random_state=10)
 data = clean(data)
 data = process(data,translator)
 ic(data)
@@ -29,6 +28,7 @@ ic(data['new'])
 data['scores'] = data['new'].apply(lambda new: sia.polarity_scores(new)) # Calculating polarity
 data['compound'] = data['scores'].apply(lambda score_dict: score_dict["compound"])
 data['Comp_score'] = data['compound'].apply(lambda score: "pos" if score>=0 else "neg")
+x_train, x_test, y_train, y_test = train_test_split(data['new'], data['Comp_score'], test_size=0.2, random_state=5)
 
 v=vader_algorithm(data)
 s = support_vector_classifier(data)
