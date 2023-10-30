@@ -8,7 +8,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from algo import vader_algorithm,support_vector_classifier,naive_bayes
 
 translator = Translator()
-data = pd.read_csv('E:\\Projects\\Sentiment_Analysis\\tweets.csv')
+sia = SentimentIntensityAnalyzer()
+data = pd.read_csv('C:\\Users\\ishan\\Desktop\\sentiment analysis\\Sentiment_Analysis\\tweets.csv')
 
 ic(data.info())
 ic(data)
@@ -16,14 +17,21 @@ ic(type(data))
 ic(data.shape)
 ic(data.describe())
 
-x_train, x_test, y_train, y_test = train_test_split(data['Tweet'], data['Date'], test_size=0.2, random_state=5)
+x_train, x_test, y_train, y_test = train_test_split(data['Tweet'], data['Date'], test_size=0.2, random_state=10)
 data = clean(data)
-data = process(data)
+data = process(data,translator)
+ic(data)
+ic(data['new'])
+# for i in data['new']:
+#     data['scores'] = SentimentIntensityAnalyzer.polarity_scores(text = i)
+    
 
-data['scores'] = data['new'].apply(lambda review: SentimentIntensityAnalyzer.polarity_scores(review)) # Calculating polarity
+data['scores'] = data['new'].apply(lambda new: sia.polarity_scores(new)) # Calculating polarity
 data['compound'] = data['scores'].apply(lambda score_dict: score_dict["compound"])
 data['Comp_score'] = data['compound'].apply(lambda score: "pos" if score>=0 else "neg")
 
-vader_algorithm(data)
-support_vector_classifier(data)
-naive_bayes(data)
+v=vader_algorithm(data)
+s = support_vector_classifier(data)
+n = naive_bayes(x_train,y_train, x_test,  y_test)
+ll = [v,s,n]
+print(ll)

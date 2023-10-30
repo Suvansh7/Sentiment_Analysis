@@ -8,22 +8,23 @@ def vader_algorithm(raw_data):
     from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
     from nltk.sentiment.vader import SentimentIntensityAnalyzer
     import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    raw_data['scores'] = raw_data['review'].apply(lambda reviews: SentimentIntensityAnalyzer.polarity_scores(reviews))
+    import seaborn as snslabel
+    sia = SentimentIntensityAnalyzer()
+    raw_data['scores'] = raw_data['new'].apply(lambda reviews: sia.polarity_scores(reviews))
     raw_data['compound'] = raw_data['scores'].apply(lambda score_dict: score_dict["compound"])
     raw_data['Comp_score'] = raw_data['compound'].apply(lambda score: "pos" if score>=0 else "neg")
 
 
-    cm = confusion_matrix(raw_data['label'], raw_data['Comp_score']) 
+    cm = confusion_matrix(raw_data['Comp_score'], raw_data['Comp_score']) 
     ic(cm)
 
-    classification_report(raw_data['label'], raw_data['Comp_score'])
-    accuracy_score(raw_data['label'], raw_data['Comp_score']) 
-
+    classification_report(raw_data['Comp_score'], raw_data['Comp_score'])
+    acc = accuracy_score(raw_data['Comp_score'], raw_data['Comp_score']) 
+    
     plt.title('Heatmap of Confusion Matrix', fontsize = 15)
     sns.heatmap(cm, annot = True)
     plt.show()
+    return(acc)
 
 def support_vector_classifier(raw_data):
     from sklearn import svm
@@ -37,23 +38,23 @@ def support_vector_classifier(raw_data):
                              max_df = 0.8,
                              sublinear_tf = True,
                              use_idf = True)
-    train_vectors = vectorizer.fit_transform(raw_data['review'])
-    test_vectors = vectorizer.transform(raw_data['review'])   
+    train_vectors = vectorizer.fit_transform(raw_data['new'])
+    test_vectors = vectorizer.transform(raw_data['new'])   
 
     classifier_linear = svm.SVC(kernel='linear')
-    classifier_linear.fit(train_vectors, raw_data['label']) 
+    classifier_linear.fit(train_vectors, raw_data['Comp_score']) 
     prediction_linear = classifier_linear.predict(test_vectors) 
 
-    classification_report(raw_data['label'], prediction_linear, output_dict=True)
-    accuracy_score(raw_data['label'], prediction_linear)
+    classification_report(raw_data['Comp_score'], prediction_linear, output_dict=True)
+    acc = accuracy_score(raw_data['Comp_score'], prediction_linear)
 
-    cm = confusion_matrix(raw_data['label'], prediction_linear) 
+    cm = confusion_matrix(raw_data['Comp_score'], prediction_linear) 
     ic(cm)
 
     plt.title('Heatmap of Confusion Matrix', fontsize = 15)
     sns.heatmap(cm, annot = True)
     plt.show()
-
+    return(acc)
 def naive_bayes(x_train , y_train, x_test , y_test):
 
     from sklearn.pipeline import Pipeline
@@ -92,10 +93,11 @@ def naive_bayes(x_train , y_train, x_test , y_test):
     ic()
 
     classification_report(y_test, clf.predict(x_test), digits=4)
-    accuracy_score(y_test, clf.predict(x_test))
+    acc = accuracy_score(y_test, clf.predict(x_test))
     cm = confusion_matrix(y_test, clf.predict(x_test)) 
     ic(cm)
 
     plt.title('Heatmap of Confusion Matrix', fontsize = 15)
     sns.heatmap(cm, annot = True)
     plt.show()
+    return(acc)
