@@ -2,7 +2,7 @@ from icecream import ic
 import numpy as np
 import nltk
 
-def Vader_Algorithm(raw_data):
+def vader_algorithm(raw_data):
     from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
     from nltk.sentiment.vader import SentimentIntensityAnalyzer
     import matplotlib.pyplot as plt
@@ -23,7 +23,7 @@ def Vader_Algorithm(raw_data):
     sns.heatmap(cm, annot = True)
     plt.show()
 
-def Support_vector_classifier(raw_data):
+def support_vector_classifier(raw_data):
     from sklearn import svm
     from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -52,7 +52,7 @@ def Support_vector_classifier(raw_data):
     sns.heatmap(cm, annot = True)
     plt.show()
 
-def Naive_Bayes(x_train , y_train):
+def naive_bayes(x_train , y_train):
 
     from sklearn.pipeline import Pipeline
     from sklearn.naive_bayes import MultinomialNB
