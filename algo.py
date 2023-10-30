@@ -1,6 +1,8 @@
 from icecream import ic
 import numpy as np
 import nltk
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def vader_algorithm(raw_data):
     from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
@@ -52,10 +54,11 @@ def support_vector_classifier(raw_data):
     sns.heatmap(cm, annot = True)
     plt.show()
 
-def naive_bayes(x_train , y_train):
+def naive_bayes(x_train , y_train, x_test , y_test):
 
     from sklearn.pipeline import Pipeline
     from sklearn.naive_bayes import MultinomialNB
+    from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
     from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
     from sklearn.model_selection import train_test_split, GridSearchCV
     
@@ -87,3 +90,12 @@ def naive_bayes(x_train , y_train):
                                 clf.cv_results_['params']):
         ic("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
     ic()
+
+    classification_report(y_test, clf.predict(x_test), digits=4)
+    accuracy_score(y_test, clf.predict(x_test))
+    cm = confusion_matrix(y_test, clf.predict(x_test)) 
+    ic(cm)
+
+    plt.title('Heatmap of Confusion Matrix', fontsize = 15)
+    sns.heatmap(cm, annot = True)
+    plt.show()
