@@ -9,7 +9,7 @@ from algo import vader_algorithm,support_vector_classifier,naive_bayes
 
 translator = Translator()
 sia = SentimentIntensityAnalyzer()
-data = pd.read_csv('C:\\Users\\ishan\\Desktop\\sentiment analysis\\Sentiment_Analysis\\tweets.csv')
+data = pd.read_csv('E:\\Projects\\Sentiment_Analysis\\tweets.csv')
 
 ic(data.info())
 ic(data)

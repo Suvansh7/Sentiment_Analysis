@@ -15,6 +15,6 @@ def multilingual(a, translator):
         return(a)
 
 def process(data, translator):
-    data = data.head(50)
+    data = data.head(1000)
     data['new'] = data['Tweet'].apply(lambda review: multilingual(review, translator))
     return data
